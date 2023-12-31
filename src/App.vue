@@ -1,23 +1,20 @@
 <template>
-  <nav>
-    <router-link to="/"> Home </router-link> |
-    <router-link to="/register"> Register </router-link> |
-    <router-link to="/sign-in"> SignIn </router-link> |
-    <router-link to="/type-test"> TypeTest </router-link> |
-  </nav>
-  <router-view />
+    <head>
+    <link rel="stylesheet" href="https://api.ssps.cajthaml.eu/file/64d9f18f79dad891e8a07c73">
+  </head>
+  <body>
+    <router-view />
+  </body>
 </template>
 
 <script>
 </script>
 
 <style>
+body{
+  background-color: rgb(59, 59, 59);
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
