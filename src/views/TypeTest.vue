@@ -16,7 +16,7 @@
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      router.push('/sign-in');
+      router.push('/');
     } catch (error) {
       console.error('Odhlášení selhalo:', error.message);
     }
