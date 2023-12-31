@@ -1,5 +1,5 @@
 <template>
-    <h1>Create an Account</h1>
+    <h1 class="heading-create">Create an Account</h1>
     <p><input type="text" placeholder="Email" v-model="email"></p>
     <p><input type="password" placeholder="Password" v-model="password"></p>
     <p><input type="password" placeholder="Password Again" v-model="passwordAgain"></p>
