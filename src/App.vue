@@ -4,7 +4,7 @@
     <title>KroobyType</title>
   </head>
   <body>
-    <Header />
+    <Header :showHeader="shouldShowHeader" />
     <router-view />
   </body>
 </template>
@@ -15,7 +15,12 @@ import Header from './components/Header.vue';
 export default{
   components: {
     Header,
-  }
+  },
+  computed: {
+    shouldShowHeader() {
+      return this.$route.path !== '/sign-in' && this.$route.path !== '/register';
+    },
+  },
 };
 </script>
 

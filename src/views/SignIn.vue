@@ -1,10 +1,12 @@
 <template>
     <h1>Sign In to an Account</h1>
-    <p><input type="text" placeholder="Email" v-model="email"></p>
+    <p><input class="email" type="text" placeholder="Email" v-model="email"></p>
     <p><input type="password" placeholder="Password" v-model="password"></p>
     <p class="error-message" v-if="errMsg">{{ errMsg }}</p>
     <p><button @click="register">Submit</button></p>
     <p><button @click="signInWithGoogle">Sign In With Google</button></p>
+    <p><button>Sign In</button></p>
+    <p><button>Home</button></p>
 </template>
 
 <script setup>

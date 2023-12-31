@@ -1,5 +1,5 @@
 <template>
-    <header>
+      <header v-if="showHeader">
         <nav class="logo-container">
           <a href="/"><img src="../assets/keyboard.png" alt="" class="icon"></a>
           <a href="/" class="logo-text">Krooby Type</a>
@@ -39,6 +39,7 @@
             .catch((error) => {
               console.error('Sign out failed:', error.message);
             });
+            router.push('/');
         },
       },
       created() {
@@ -48,6 +49,12 @@
           this.isSignedIn = !!user;
         });
       },
+    props: {
+        showHeader: {
+            type: Boolean,
+            default: true,
+        },
+    },
     };
     </script>
     
