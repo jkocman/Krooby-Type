@@ -1,7 +1,6 @@
 <template>
     <head>
     <link rel="stylesheet" href="https://api.ssps.cajthaml.eu/file/64d9f18f79dad891e8a07c73">
-    <title>KroobyType</title>
   </head>
   <body>
     <Header :showHeader="shouldShowHeader" />
@@ -20,6 +19,9 @@ export default{
     shouldShowHeader() {
       return this.$route.path !== '/sign-in' && this.$route.path !== '/register';
     },
+  },
+  mounted() {
+    document.title = 'Krooby Type';
   },
 };
 </script>
