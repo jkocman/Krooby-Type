@@ -14,12 +14,13 @@ const router = createRouter({
                 requiresAuth: true
             },
         },
+        {path: '/result', component: () => import('../views/Result.vue')}
     ],
 });
 
 router.beforeEach((to, from, next) => {
     const auth = getAuth();
-
+    
     if (to.meta.requiresAuth) {
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -32,5 +33,6 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
+
 
 export default router;

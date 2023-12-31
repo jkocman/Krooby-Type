@@ -1,5 +1,5 @@
 <template>
-       <div class="back-button">
+    <div class="back-button">
         <a href="/"><img class="sign-in-logo" src="../assets/keyboard.png" alt=""></a>
     </div>
     <div class="sign-in-container">
@@ -17,10 +17,12 @@
 import { ref } from 'vue';
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'vue-router';
+
 const email = ref('');
 const password = ref('');
 const errMsg = ref('');
 const router = useRouter();
+
 const register = () => {
     signInWithEmailAndPassword(getAuth(), email.value, password.value)
         .then(() => {
@@ -45,7 +47,6 @@ const register = () => {
             }
         });
 };
-
 const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(getAuth(), provider)
