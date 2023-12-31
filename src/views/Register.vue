@@ -7,11 +7,10 @@
         <p><input class="text-box" type="text" placeholder="Email" v-model="email"></p>
         <p><input class="text-box" type="password" placeholder="Password" v-model="password"></p>
         <p><input class="text-box" type="password" placeholder="Password Again" v-model="passwordAgain"></p>
-        <p class="error-message">{{ passwordError }}</p>
-        <p class="error-message">{{ loginError }}</p>
+        <p class="error-message" v-if="errMsg">{{ errMsg}}</p>
         <p><button class="continue-button" @click="register">Continue</button></p>
         <p class="account">Already have an account? <a class="redirect" href="/sign-in">Sign in</a></p>
-        <p><button class="google-button" @click="signInWithGoogle"><img class="google-image" src="../assets/google-logo-28FA7991AF-seeklogo.com.png" alt="">Sign In With Google</button></p>
+        <p><button class="google-button" @click="signInWithGoogle"><img class="google-image" src="../assets/google-logo-28FA7991AF-seeklogo.com.png" alt="">Continue With Google</button></p>
     </div>
 </template>
 
@@ -22,12 +21,11 @@ import { useRouter } from 'vue-router';
 const email = ref('');
 const password = ref('');
 const passwordAgain = ref('');
-const passwordError = ref('');
-const loginError = ref('');
+const errMsg = ref('');
 const router = useRouter();
 const register = () => {
     if (password.value !== passwordAgain.value) {
-        passwordError.value = 'Passwords do not match.';
+        errMsg.value = 'Passwords do not match.';
         return;
     }
     createUserWithEmailAndPassword(getAuth(), email.value, password.value)
@@ -37,7 +35,7 @@ const register = () => {
         })
         .catch((error) => {
             console.error('Registration failed:', error.message);
-            loginError.value = 'Invalid email or password';
+            errMsg.value = 'Invalid email or password';
             return;
         });
 };
@@ -74,7 +72,7 @@ const signInWithGoogle = () => {
 }
 .register-heading{
     color: rgb(234, 107, 107);
-    font-size: 50px;
+    font-size: 45px;
     margin-bottom: 40px;
 }
 .text-box{
@@ -92,7 +90,7 @@ const signInWithGoogle = () => {
 .error-message{
     color: red;
     font-size: 15px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 .continue-button{
     margin-bottom: 15px;
@@ -126,6 +124,9 @@ const signInWithGoogle = () => {
   background-color: rgb(36, 36, 36);
   color: white;
   font-size: 20px;
+}
+.google-button:hover{
+    background-color: rgba(36, 36, 36, 0.7);
 }
 .google-image {
     height: 30px;
