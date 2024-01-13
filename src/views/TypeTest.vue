@@ -5,7 +5,7 @@
   <div>
     <p :key="word">{{ randomWords.join(' ') }}</p>
   </div>
-  <input type="text" class="tohle" @input="handleInput">
+  <input type="text" v-model="inputText" class="tohle" @input="handleInput">
   <div>
     <button @click="buttonPress(), remainingTime = 15;">15</button>
     <button @click="buttonPress(), remainingTime = 30;">30</button>
@@ -25,6 +25,7 @@ export default {
       timer: null,
       isTimerRunning: false,
       randomWords: [],
+      inputText: '',
     };
   },
   methods: {
@@ -50,6 +51,18 @@ export default {
     },
     handleInput() {
       this.startTimer();
+      let i = 0;
+      if (this.inputText.endsWith(' ')) {
+        // Smaže slovo, pokud byl stisknut mezerník
+        this.inputText = '';
+        i++;
+        if(this.inputText === this.randomWords[i]){
+          console.log('spravne');
+        }
+        else{
+          console.log('spatne');
+        }
+      }
     },
     getRandomWords() {
       const totalWords = words.getWordCount();
