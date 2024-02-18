@@ -5,9 +5,9 @@
         <a href="/" class="logo-text">Krooby Type</a>
       </nav>
       <nav class="button-container">
-        <button v-if="!isSignedIn" class="button-register" @click="goToRegister">Registrovat</button>
-        <button v-if="!isSignedIn" class="button-sign-in" @click="goToSignIn">Přihlásit se</button>
-        <button v-if="isSignedIn" class="button-sign-out" @click="signOut">Odhlásit se</button>
+        <button v-if="!isSignedIn" class="button-register" @click="goToRegister">Register</button>
+        <button v-if="!isSignedIn" class="button-sign-in" @click="goToSignIn">Sign in</button>
+        <button v-if="isSignedIn" class="button-sign-out" @click="signOut">Log out</button>
   
         
       </nav>

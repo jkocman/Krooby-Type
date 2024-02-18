@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "an-array-of-english-words": "^2.0.0",
     "core-js": "^3.8.3",
     "firebase": "^10.6.0",
     "popular-english-words": "^1.0.2",

@@ -80,7 +80,7 @@
     -moz-text-fill-color: transparent;
 }
 .main-button{
-    font-size: 20px;
+    font-size: 25px;
     background-image: linear-gradient(to top, rgb(247, 112, 98) 0%, rgb(254, 81, 150) 100%);
     padding: 14px 32px;
     border: none;
@@ -100,6 +100,10 @@
 
     .info-panel {
         margin-bottom: 20px;
+        width: 850px;
+    }
+    .text-container{
+      width: 800px;
     }
 }
 </style>

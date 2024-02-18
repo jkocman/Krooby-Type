@@ -1,16 +1,25 @@
 <template>
-  <div class="timer">
-    <p>Zbývající čas: {{ formatTime(remainingTime) }}</p>
+  <div class="timer-container">
+    <p class="timer">Remaining time: {{ formatTime(remainingTime) }}</p>
   </div>
   <div>
-    <p :key="word">{{ randomWords.join(' ') }}</p>
+    <span 
+      :key="index" 
+      v-for="(word, index) in randomWords" 
+      :class="['rng-words', { 'correct-word': correctWords[index], 'incorrect-word': incorrectWords[index] }]"
+    >
+      <span v-if="index < currentWordIndex">{{ word }}</span>
+      <span v-else-if="index === currentWordIndex">{{ word }}</span>
+      <span v-else style="color: white">{{ word }}</span>
+      &nbsp;
+    </span>
   </div>
-  <input type="text" v-model="inputText" class="tohle" @input="handleInput">
+  <input type="text" v-model="inputText" class="text-input" @input="handleInput">
   <div>
-    <button @click="buttonPress(), remainingTime = 15;">15</button>
-    <button @click="buttonPress(), remainingTime = 30;">30</button>
-    <button @click="buttonPress(), remainingTime = 60;">60</button>
-    <button @click="buttonPress(), remainingTime = 120;">120</button>
+    <button class="time-btn" @click="buttonPress(), remainingTime = 15;">15s</button>
+    <button class="time-btn" @click="buttonPress(), remainingTime = 30;">30s</button>
+    <button class="time-btn" @click="buttonPress(), remainingTime = 60;">60s</button>
+    <button class="time-btn" @click="buttonPress(), remainingTime = 120;">120s</button>
   </div>
 </template>
 
@@ -26,6 +35,10 @@ export default {
       isTimerRunning: false,
       randomWords: [],
       inputText: '',
+      correctWords: [],
+      incorrectWords: [],
+      currentWordIndex: 0,
+      totalWordLength: 0, // Celková délka správně zapsaných slov
     };
   },
   methods: {
@@ -34,6 +47,7 @@ export default {
         this.timer = setInterval(() => {
           this.remainingTime--;
           if (this.remainingTime === 0) {
+            this.calculateWPM(); // Po vypršení času spočítat WPM
             router.push('/result');
           }
         }, 1000);
@@ -48,27 +62,33 @@ export default {
     buttonPress() {
       clearInterval(this.timer);
       this.isTimerRunning = false;
+      this.correctWords = [];
+      this.incorrectWords = [];
+      this.currentWordIndex = 0;
+      this.inputText = '';
+      this.totalWordLength = 0; // Resetovat celkovou délku slov
     },
     handleInput() {
       this.startTimer();
-      let i = 0;
       if (this.inputText.endsWith(' ')) {
-        // Smaže slovo, pokud byl stisknut mezerník
+        const inputWord = this.inputText.trim();
+        const correctWord = this.randomWords[this.currentWordIndex];
+        if (inputWord === correctWord) {
+          this.correctWords.push(true);
+          this.incorrectWords.push(false);
+          this.totalWordLength += inputWord.length; // Přidat délku správně zapsaného slova k celkové délce
+          this.currentWordIndex++;
+        } else {
+          this.correctWords.push(false);
+          this.incorrectWords.push(true);
+        }
         this.inputText = '';
-        i++;
-        if(this.inputText === this.randomWords[i]){
-          console.log('spravne');
-        }
-        else{
-          console.log('spatne');
-        }
       }
     },
     getRandomWords() {
       const totalWords = words.getWordCount();
       const count = 10;
 
-      // Generate 10 random indices
       const randomIndices = [];
       while (randomIndices.length < count) {
         const randomIndex = Math.floor(Math.random() * totalWords);
@@ -77,9 +97,17 @@ export default {
         }
       }
 
-      // Get words at random indices
       this.randomWords = randomIndices.map((index) => words.getWordAtPosition(index));
     },
+    calculateWPM() {
+      // Předpokládáme, že délka každého slova je 4
+      const wordCount = this.totalWordLength / 4;
+      // Vypočítat WPM
+      const totalTime = 60 - this.remainingTime;
+      const wpm = Math.round((wordCount / totalTime) * 60);
+      // Uložit WPM do datového modelu, který je přístupný na jiné stránce
+      return wpm;
+    }
   },
   mounted() {
     this.getRandomWords();
@@ -88,7 +116,42 @@ export default {
 </script>
 
 <style>
-.timer {
-  margin-top: 200px;
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.timer-container {
+  margin-top: 300px;
+  margin-bottom: 20px;
+}
+.timer{
+  font-size: 30px;
+  color: rgb(208, 208, 238);
+  background-image: linear-gradient(to top, rgb(47, 109, 255) 0%, rgb(153, 236, 255) 100%);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent; 
+}
+.rng-words{
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.correct-word {
+  color: green;
+}
+.incorrect-word {
+  color: red;
+}
+.text-input{
+  height: 25px;
+  width: 700px;
+  border-radius: 8px;
+  border: 1px solid black;
+}
+.time-btn{
+  margin-right: 40px;
 }
 </style>
