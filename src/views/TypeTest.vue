@@ -10,7 +10,7 @@
     >
       <span v-if="index < currentWordIndex">{{ word }}</span>
       <span v-else-if="index === currentWordIndex">{{ word }}</span>
-      <span v-else style="color: white">{{ word }}</span>
+      <span v-else style="color: gray">{{ word }}</span>
       &nbsp;
     </span>
   </div>
@@ -25,7 +25,6 @@
 
 <script>
 import { words } from 'popular-english-words';
-import router from '@/router';
 
 export default {
   data() {
@@ -38,17 +37,20 @@ export default {
       correctWords: [],
       incorrectWords: [],
       currentWordIndex: 0,
-      totalWordLength: 0, // Celková délka správně zapsaných slov
+      totalWordLength: 0,
     };
   },
   methods: {
     startTimer() {
       if (!this.isTimerRunning) {
+        this.startTime = Date.now();
         this.timer = setInterval(() => {
           this.remainingTime--;
           if (this.remainingTime === 0) {
-            this.calculateWPM(); // Po vypršení času spočítat WPM
-            router.push('/result');
+            this.calculateWPM();
+            this.reset();
+            this.remainingTime = 15;
+            this.getRandomWords();
           }
         }, 1000);
         this.isTimerRunning = true;
@@ -60,13 +62,7 @@ export default {
       return `${String(remainingminutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
     },
     buttonPress() {
-      clearInterval(this.timer);
-      this.isTimerRunning = false;
-      this.correctWords = [];
-      this.incorrectWords = [];
-      this.currentWordIndex = 0;
-      this.inputText = '';
-      this.totalWordLength = 0; // Resetovat celkovou délku slov
+      this.reset();
     },
     handleInput() {
       this.startTimer();
@@ -81,8 +77,13 @@ export default {
         } else {
           this.correctWords.push(false);
           this.incorrectWords.push(true);
+          this.currentWordIndex++;
         }
         this.inputText = '';
+      }
+      if (this.currentWordIndex === this.randomWords.length) {
+        this.getRandomWords();
+        this.currentWordIndex = 0;
       }
     },
     getRandomWords() {
@@ -98,15 +99,24 @@ export default {
       }
 
       this.randomWords = randomIndices.map((index) => words.getWordAtPosition(index));
+
+      this.correctWords = [];
+      this.incorrectWords = [];
     },
     calculateWPM() {
-      // Předpokládáme, že délka každého slova je 4
       const wordCount = this.totalWordLength / 4;
-      // Vypočítat WPM
-      const totalTime = 60 - this.remainingTime;
-      const wpm = Math.round((wordCount / totalTime) * 60);
-      // Uložit WPM do datového modelu, který je přístupný na jiné stránce
-      return wpm;
+      const elapsedTime = (Date.now() - this.startTime) / 1000;
+      const wpm = Math.round((wordCount / elapsedTime) * 60);
+      alert(wpm);
+    },
+    reset(){
+      clearInterval(this.timer);
+      this.isTimerRunning = false;
+      this.correctWords = [];
+      this.incorrectWords = [];
+      this.currentWordIndex = 0;
+      this.inputText = '';
+      this.totalWordLength = 0;
     }
   },
   mounted() {
@@ -136,8 +146,9 @@ body{
   -moz-text-fill-color: transparent; 
 }
 .rng-words{
-  font-size: 20px;
+  font-size: 22px;
   margin-bottom: 10px;
+  color: black;
 }
 .correct-word {
   color: green;
@@ -149,9 +160,13 @@ body{
   height: 25px;
   width: 700px;
   border-radius: 8px;
-  border: 1px solid black;
+  border: 1px solid gray;
+  margin-top: 20px;
+  background-color: rgb(36, 36, 36);
+  color: white;
 }
 .time-btn{
   margin-right: 40px;
+  margin-top: 20px;
 }
 </style>
