@@ -10,7 +10,7 @@
     >
       <span v-if="index < currentWordIndex">{{ word }}</span>
       <span v-else-if="index === currentWordIndex">{{ word }}</span>
-      <span v-else style="color: gray">{{ word }}</span>
+      <span v-else style="color: white">{{ word }}</span>
       &nbsp;
     </span>
   </div>
@@ -107,7 +107,7 @@ export default {
       const wordCount = this.totalWordLength / 4;
       const elapsedTime = (Date.now() - this.startTime) / 1000;
       const wpm = Math.round((wordCount / elapsedTime) * 60);
-      alert(wpm);
+      alert('Vaše WPM je: ' + wpm);
     },
     reset(){
       clearInterval(this.timer);
@@ -168,5 +168,19 @@ body{
 .time-btn{
   margin-right: 40px;
   margin-top: 20px;
+  background-color: rgb(234, 107, 107);
+  box-shadow: 0px 0px 2px 2px rgb(234, 107, 107, 0.7);
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  font-size: 20px;
+  border-radius: 5px;
+}
+.time-btn:hover{
+  background-color: rgb(234, 107, 107, 0.7);
+}
+.time-btn:active{
+  background-color: rgba(241, 143, 143, 0.7);
+  box-shadow: 0px 0px 2px 2px rgb(241, 143, 143, 0.7);
 }
 </style>
